@@ -4,19 +4,13 @@ Author:		Ryan Wagner
 		https://github.com/rkwagner
 Date:		August 26, 2014
 Description:	Writes convincing filler text.
-		Constraints:
-		Input - Number of words
-		Sentences, 	2-8 words long.
-		Words, 		1-12 chars long.
-		Sentences,	Start with a cap, end with period.
-		Linebreak,	15% chance.
-		Paragraph,	50% of linebreak.
 '''
 
+from __future__ import print_function
 import random
 
-def letters():
-	a = random.uniform( 1 , 100 )
+def letters( ):
+	a = random.uniform( 0 , 100 )
 	if a < 8.167:
 		return 'a'
 	elif a < 9.659:
@@ -69,29 +63,46 @@ def letters():
 		return 'y'
 	return 'z'
 
-def word():
-	word_len = random.randint( 1 , 12 )
+def word( ):
+	word_len = random.randint( 1 , 13 )
 	return word_len
 
-def sentence():
-	sent_len = random.randint( 2 , 8 )
+def sentence( ):
+	sent_len = random.randint( 3 , 9 )
 	return sent_len
 
-def linebreak():
+def linebreak( ):
 	line_break = random.randint( 1 , 100 )
 	return 2 if line_break > 93 else 1 if line_break > 85 else 0
 
 #main function.
-'''
-Step 1: Get user input word count.
-Step 2: Use that as a definition of max words (max loops?)
-Step 3: Iterate using the three above functions for word_length, 
-	sentence_length, and chance of line/paragraph break.
-
-	-If word length > 12, use an integer instead of looping through
-	the word.
-	-When a sentence starts, the first letter of the first word is 
-	capitalized.
-	-When it ends, insert a period.
-'''
-
+try:
+	word_count = int( input(  "Filler Length: " ) )
+except (SyntaxError, NameError):
+	print( 'Not a valid integer.' )
+else:
+	a = 0
+	while a < word_count:
+		sent_len = sentence( )
+		a += sent_len
+		for b in range( 0 , sent_len ):
+			word_len = word( )
+			if word_len == 13:
+				print( random.randint( 0 , 10000 ), end = '' ),
+			else:
+				for c in range( 0 , word_len ):
+					if b == 0 and c == 0:
+						print( letters( ).capitalize( ),
+								end = '' ),
+					else:
+						print ( letters( ), end = '' ),
+			if b < sent_len - 1:
+				print( ' ', end = '' ),
+			else:
+				print( '. ', end = '' ),
+		break_type = linebreak()
+		if break_type == 2:
+			print( '\n' )
+		elif break_type == 1:
+			print( '' )
+	print( '' )
